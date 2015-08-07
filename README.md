@@ -1,15 +1,17 @@
 # Snorlax
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/restful_controller`. To experiment with that code, run `bin/console` for an interactive prompt.
+![](http://img3.wikia.nocookie.net/__cb20140924022259/pokemon/images/9/9f/143Snorlax_OS_anime.png)
 
-TODO: Delete this and the text above, and describe your gem
+Snorlax is an opinionated, flexible, and well-RESTed gem for building Rails APIs. It's designed to Do The Right Thing™ by default, but allow you to customize where necessary.
+
+It's been extracted from [Loomio](www.github.com/loomio/loomio).
 
 ## Installation
 
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'restful_controller'
+gem 'snorlax'
 ```
 
 And then execute:
@@ -18,22 +20,47 @@ And then execute:
 
 Or install it yourself as:
 
-    $ gem install restful_controller
+    $ gem install snorlax
 
 ## Usage
 
-TODO: Write usage instructions here
+There are two primary ways to use Snorlax. The easier way is to inherit from it:
 
-## Development
+```
+class MyController < Snorlax::Base
+end
+```
 
-After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake test` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
+But, if you're already inheriting from something else, Snorlax makes it easy to simply apply itself to your controller without being a parent, by calling `snorlax_used_rest!` like so:
 
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.org).
+```
+class MyController < SomeOtherController
+  snorlax_used_rest!
+end
+```
+
+Once you've got it installed, you're good to go!
+
+TODO:
+- Expand on show action
+- - respond_with_resource
+  - explanation of side-loading
+- Expand on index action
+- - accessible and public records (required)
+- - default page size
+  - From, to, per, since, until, timeframe_for parameters
+  - Toggling pagination / timeframing
+  - Customizing the serializer options
+- Expand on create / update action
+  - create_action, update_action overriding
+  - respond_with_resource
+- Expand on destroy action [destroy_action]
+  - destroy_action overriding
+- Explain the respond_with_errors behaviour
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/restful_controller. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](contributor-covenant.org) code of conduct.
-
+Bug reports and pull requests are welcome on GitHub at https://github.com/gdpelican/snorlax. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](contributor-covenant.org) code of conduct.
 
 ## License
 
