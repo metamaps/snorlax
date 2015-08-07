@@ -157,7 +157,7 @@ module Snorlax
         end
 
         def respond_with_errors
-          render json: {errors: resource.errors.as_json()}, root: false, status: 422
+          render json: {errors: resource.errors.as_json}, root: false, status: 422
         end
 
         def serializer_root
