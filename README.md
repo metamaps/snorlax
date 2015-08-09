@@ -57,7 +57,7 @@ NB: This would be a great place to ensure that the current user is allowed to vi
 
 Snorlax DEMANDS that you define two separate methods for the index action to work properly:
 - `public_records` - records which are available publicly (ie, they can be viewed even if current_user is nil)
-- `visible_recordss` - records which the current user is allowed to access.
+- `visible_records` - records which the current user is allowed to access.
 
 ```
 class StaryusController < Snorlax::Base
