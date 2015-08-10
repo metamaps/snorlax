@@ -47,13 +47,13 @@ Once you've got it installed, you're good to go!
 
 Snorlax is designed to provide a set of flexible API endpoints for client side consumption. It uses side loading, which means that all of the records returned are unnested and easily available for consumption.
 
-###### The show action
+#### The show action
 
 By default, Snorlax will fetch the requested model by `id` using the `ActiveModel::Base.find` method. To override this behaviour, you may override the `load_resource` method in your controller.
 
 NB: This would be a great place to ensure that the current user is allowed to view the requested resource.
 
-###### The index action
+#### The index action
 
 Snorlax DEMANDS that you define two separate methods for the index action to work properly:
 - `public_records` - records which are available publicly (ie, they can be viewed even if current_user is nil)
@@ -80,7 +80,18 @@ class StarmiesController < Snorlax::Base
 end
 ```
 
-###### Paging the index action
+The default index action look like this:
+
+```
+def index
+  instantiate_collection
+  respond_with_collection
+end
+```
+
+but there are many options to customize it.
+
+##### Paging the index action
 
 A Snorlax controller can accept `from` and `per` parameters for paging. For example,
 
@@ -102,7 +113,7 @@ class WobbuffetsController < Snorlax::Base
 end
 ```
 
-###### Timeframing the index action
+##### Timeframing the index action
 
 A Snorlax controller can accept `since` and `until` parameters for timeframing. The date it looks for defaults to `created_at`. For example,
 
@@ -122,7 +133,20 @@ will return charmeleons which evolved between Nov 11, 2011, and Dec 12, 2012
 
 Since and until can be in any format that `Date.parse` will accept.
 
-###### Custom filtering on the index action
+##### Overriding the timeframing or pagination options
+
+If you want to disallow timeframing and/or pagination for a particular action, simple pass `timeframe_collection: false` or `page_collection: false` when the collection is instantiated.
+
+```
+class SquirtlesController < Snorlax::Base
+  def all_squirtles
+    instantiate_collection paginate_collection: false, timeframe_collection: false
+    respond_with_collection
+  end
+end
+```
+
+##### Custom filtering on the index action
 
 Snorlax also provides a dead simple way to provide your own filters, in addition to and in combination with the ones provided.
 You can do this by passing a block to the `instantiate_collection` method in your controller action. For example,
@@ -140,14 +164,91 @@ Will return all sleeping Chanseys. (This can be combined with timeframing and pa
 (NB: this filtering happens before the collection is paginated or timeframed, so it's a good opportunity to add additional filters
 or apply an order to your records. Or both!)
 
-TODO
-  - Customizing the serializer options
-- Expand on create / update action
-  - create_action, update_action overriding
-  - respond_with_resource
-- Expand on destroy action [destroy_action]
-  - destroy_action overriding
-- Explain the respond_with_errors behaviour
+###### Customizing the serializer options
+
+By default, Snorlax will find a serializer based on the controller name, and serialize out your collection of records with a root.
+
+###### To override serializer and root for all actions in the controller
+
+You can override the serializer being used or the serializer root across the controller by defining a `resource_serializer` or `serializer_root` method, respectively:
+```
+class DittosController < Snorlax::Base
+  def resource_serializer
+    PokemonSerializer
+  end
+
+  def serializer_root
+    :pokemon
+  end
+end
+```
+
+This will result is JSON like this:
+```
+{ pokemon: [{ pokemon_serializer_field_a: 'valueA', pokemon_serializer_field_b: 'valueB' }] }
+```
+
+###### To override serializer and root for a single action
+
+To do this for a particular action, pass the `serializer` or `root` option to respond_with_collection.
+(NB: You can also pass a scope to the serializer in this way, by passing a 'scope' option)
+
+```
+class DittosController < Snorlax::Base
+  def index
+    instantiate_collection
+    respond_with_collection serializer: PokemonSerializer, root: :pokemon, scope: { is_ditto: true }
+  end
+end
+```
+
+#### The create / update actions
+
+By default, Snorlax will load the requested resource, perform an action on it, and then respond with the resource (with the same response as the show action) It looks like this:
+
+```
+def create
+  instantiate_resource
+  create_action
+  respond_with_resource
+end
+
+def create_action
+  resource.save
+end
+```
+
+##### Overriding the action command
+
+If you have more complicated logic for creating or updating records (your creation / update logic is wrapped up in a service object, for example), simply override the `create_action` method (or the `update_action` method in the case of update)
+
+```
+def MewtwosController < Snorlax::Base
+  def create_action
+    Science.faff_about(resource_params)
+  end
+end
+```
+
+(NB: this is a good opportunity to make sure that the current user has permission to modify the record.)
+
+##### Overriding the resource serialization
+
+`respond_with_resource` accepts the same parameters as respond_with_collection, to allow for single-action customization of the json response.
+
+```
+def MewtwosController < Snorlax::Base
+  def create
+    instantiate_resource
+    create_action
+    respond_with_resource { serializer: LegendarySerializer, root: 'legendary_pokemon' }
+  end
+end
+```
+
+##### If there are errors on the object
+
+TODO: explain the respond_with_errors behaviour
 
 ## Contributing
 
