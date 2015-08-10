@@ -43,8 +43,6 @@ Once you've got it installed, you're good to go!
 
 #### Some things to know about Snorlax:
 
-###### Side loading
-
 Snorlax is designed to provide a set of flexible API endpoints for client side consumption. It uses side loading, which means that all of the records returned are unnested and easily available for consumption.
 
 #### The show action
@@ -99,7 +97,7 @@ A Snorlax controller can accept `from` and `per` parameters for paging. For exam
 /api/vi/psyducks?from=0&per=100
 ```
 
-will return the first 100 psyducks within the acccessible records.
+will return the first 100 psyducks within the accessible records.
 
 If no `from` or `per` params are provided, Snorlax will default to the first 50 records. (from = 0, per = 50)
 
@@ -164,11 +162,11 @@ Will return all sleeping Chanseys. (This can be combined with timeframing and pa
 (NB: this filtering happens before the collection is paginated or timeframed, so it's a good opportunity to add additional filters
 or apply an order to your records. Or both!)
 
-###### Customizing the serializer options
+##### Customizing the serializer options
 
 By default, Snorlax will find a serializer based on the controller name, and serialize out your collection of records with a root.
 
-###### To override serializer and root for all actions in the controller
+##### To override serializer and root for all actions in the controller
 
 You can override the serializer being used or the serializer root across the controller by defining a `resource_serializer` or `serializer_root` method, respectively:
 ```
@@ -188,7 +186,7 @@ This will result is JSON like this:
 { pokemon: [{ pokemon_serializer_field_a: 'valueA', pokemon_serializer_field_b: 'valueB' }] }
 ```
 
-###### To override serializer and root for a single action
+##### To override serializer and root for a single action
 
 To do this for a particular action, pass the `serializer` or `root` option to respond_with_collection.
 (NB: You can also pass a scope to the serializer in this way, by passing a 'scope' option)
