@@ -49,6 +49,14 @@ Snorlax is designed to provide a set of flexible API endpoints for client side c
 
 By default, Snorlax will fetch the requested model by `id` using the `ActiveModel::Base.find` method. To override this behaviour, you may override the `load_resource` method in your controller.
 
+```
+class TaurosController < Snorlax::Base
+  def load_resource
+    SafariZone.find(params[:id])
+  end
+end
+```
+
 NB: This would be a great place to ensure that the current user is allowed to view the requested resource.
 
 #### The index action
