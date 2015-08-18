@@ -140,7 +140,7 @@ module Snorlax
           "#{resource_name}_serializer".camelize.constantize
         end
 
-        def respond_with_resource(scope: {}, serializer: resource_serializer, root: serializer_root)
+        def respond_with_resource(scope: default_scope, serializer: resource_serializer, root: serializer_root)
           if resource.errors.empty?
             respond_with_collection(resources: [resource], scope: scope, serializer: serializer, root: root)
           else
@@ -148,7 +148,7 @@ module Snorlax
           end
         end
 
-        def respond_with_collection(resources: collection, scope: {}, serializer: resource_serializer, root: serializer_root)
+        def respond_with_collection(resources: collection, scope: default_scope, serializer: resource_serializer, root: serializer_root)
           render json: resources, scope: scope, each_serializer: serializer, root: root
         end
 
@@ -162,6 +162,10 @@ module Snorlax
 
         def serializer_root
           controller_name
+        end
+
+        def default_scope
+          {}
         end
       end
     end
