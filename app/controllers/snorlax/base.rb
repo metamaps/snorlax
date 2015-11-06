@@ -93,7 +93,7 @@ module Snorlax
         end
 
         def accessible_records
-          if current_user
+          if current_user.is_logged_in?
             visible_records
           else
             public_records
