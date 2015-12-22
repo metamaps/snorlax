@@ -3,7 +3,7 @@ source 'https://rubygems.org'
 # Specify your gem's dependencies in restful_controller.gemspec
 gemspec
 
-gem 'rails', '~> 4.1.0'
+gem 'rails', '> 4.1.0'
 gem 'cancancan', '~> 1.12.0'
 
 group :development, :test do
