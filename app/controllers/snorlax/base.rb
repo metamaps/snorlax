@@ -18,7 +18,7 @@ module Snorlax
         end
 
         def create
-          instantiate_resouce
+          instantiate_resource
           create_action
           respond_with_resource
         end
@@ -65,7 +65,7 @@ module Snorlax
           instance_variable_set :"@#{resource_name.pluralize}", value
         end
 
-        def instantiate_resouce
+        def instantiate_resource
           self.resource = resource_class.new(resource_params)
         end
 
