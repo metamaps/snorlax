@@ -146,7 +146,7 @@ If you want to disallow timeframing and/or pagination for a particular action, s
 ```
 class SquirtlesController < Snorlax::Base
   def all_squirtles
-    instantiate_collection paginate_collection: false, timeframe_collection: false
+    instantiate_collection page_collection: false, timeframe_collection: false
     respond_with_collection
   end
 end
