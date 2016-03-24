@@ -4,7 +4,6 @@ source 'https://rubygems.org'
 gemspec
 
 gem 'rails', '> 4.1.0'
-gem 'cancancan', '~> 1.12.0'
 
 group :development, :test do
   gem 'byebug', require: nil

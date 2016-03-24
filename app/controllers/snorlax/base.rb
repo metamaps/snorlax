@@ -4,7 +4,10 @@ module Snorlax
     def self.snorlax_used_rest!(controller)
       controller.class_eval do
         if defined? CanCan::AccessDenied
-          rescue_from(CanCan::AccessDenied)                    { |e| respond_with_standard_error e, 403 }
+          rescue_from(CanCan::AccessDenied)                  { |e| respond_with_standard_error e, 403 }
+        end
+        if defined? Pundit::NotAuthorizedError
+          rescue_from(Pundit::NotAuthorizedError)            { |e| respond_with_standard_error e, 403 }
         end
 
         rescue_from(ActionController::UnpermittedParameters) { |e| respond_with_standard_error e, 400 }
