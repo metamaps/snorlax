@@ -3,7 +3,10 @@ module Snorlax
 
     def self.snorlax_used_rest!(controller)
       controller.class_eval do
-        rescue_from(CanCan::AccessDenied)                    { |e| respond_with_standard_error e, 403 }
+        if defined? CanCan::AccessDenied
+          rescue_from(CanCan::AccessDenied)                    { |e| respond_with_standard_error e, 403 }
+        end
+
         rescue_from(ActionController::UnpermittedParameters) { |e| respond_with_standard_error e, 400 }
         rescue_from(ActionController::ParameterMissing)      { |e| respond_with_standard_error e, 400 }
         rescue_from(ActiveRecord::RecordNotFound)            { |e| respond_with_standard_error e, 404 }
